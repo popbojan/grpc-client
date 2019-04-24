@@ -1,7 +1,9 @@
-import { Module } from '@nestjs/common';
-import { NinjaModule } from './ninja/ninja.module';
+import {Module} from '@nestjs/common';
+import {ArticleModule} from './article/article.module';
+import {NinjaModule} from './ninja/ninja.module';
 
 @Module({
-  imports: [NinjaModule],
+  imports: [ArticleModule, NinjaModule],
 })
-export class ApplicationModule {}
+export class ApplicationModule {
+}

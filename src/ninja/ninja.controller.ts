@@ -1,27 +1,14 @@
 import {Controller, Get, OnModuleInit, Param, Post, Req} from '@nestjs/common';
 import {Client, ClientGrpc} from '@nestjs/microservices';
 import {Observable} from 'rxjs';
-import {grpcClientOptions} from '../grpc-client.options';
 import {Body} from '@nestjs/common/decorators/http/route-params.decorator';
-
-interface IEmpty {
-}
-
-interface INinja {
-  id: number;
-  name: string;
-}
-
-interface NinjaService {
-  findOne(data: { id: number }): Observable<any>;
-  findAll(empty: IEmpty): Observable<any>;
-  add(ninja: INinja): Observable<any>;
-}
+import {ninjaGrpcClientOptions} from './ninja-grpc-client.options';
+import {INinja, NinjaService} from '../codegen';
 
 @Controller('ninja')
 export class NinjaController implements OnModuleInit {
 
-  @Client(grpcClientOptions)
+  @Client(ninjaGrpcClientOptions)
   private readonly client: ClientGrpc;
 
   private ninjaService: NinjaService;
@@ -32,12 +19,12 @@ export class NinjaController implements OnModuleInit {
 
   @Get(':id')
   execute(@Param() params): Observable<any> {
-    return this.ninjaService.findOne({ id: +params.id });
+    return this.ninjaService.findOne({id: +params.id});
   }
 
   @Get()
   findAll(@Req() request): Observable<any> {
-    return  this.ninjaService.findAll(request);
+    return this.ninjaService.findAll(request);
   }
 
   @Post()
